@@ -1,0 +1,56 @@
+{%extends 'store/main.html' %}
+{%block title%}{{product.name}}{%endblock%}
+
+{%block content%}
+<style>
+    .thumbnail{
+        box-shadow: none;
+    }
+</style>
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 ">
+                <div class="box-element product">
+                    <a href="{% url 'store' %}" class="btn btn-outline-dark ">&#x2190;Continue Shopping</a>
+                    <img class="thumbnail" src="{{product.imageURL}}" alt="">
+                    <hr>
+                    <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to cart</button>
+                    <a href="" class="btn btn-outline-success">Contact Vendor</a>
+                    <h4 style="float:right">{{product.price | floatformat:2}}Xaf</h4>
+                </div>
+            </div>
+            <div class="col-lg-6 ">
+                <div class="box-element product">
+                    <h6><strong>{{product.name}}</strong></h6>
+                    <p><strong>Price : </strong>{{product.price}}XAF</p>
+                    <p><strong>Vendor : </strong>{{product.vendor}}</p>
+                    <hr>
+                    <p>{{product.description}}</p>
+                    <hr>
+                    {% if request.user == product.vendor %}
+                        <p><strong>This is one of your products</strong></p>
+
+                        <a href="{%url 'delete' product.id %}" class="btn btn-outline-danger">Delete</a>
+                        <a href="{%url 'edit' product.id %}" class="btn btn-success">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-4">
+        <div class="row">
+            {% for product in related_products%}
+                <div class="col-lg-4">
+                    <img class="thumbnail" src="{{product.imageURL}}" alt="">
+                    <div class="box-element product">
+                        <h6><strong>{{product.name}}</strong></h6>
+                        <hr>
+                        <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to cart</button>
+                        <a href="{% url 'detail' product.id%}" class="btn btn-outline-success">View</a>
+                        <h4 style="float:right">{{product.price | floatformat:2}}Xaf</h4>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{%endblock content%}
